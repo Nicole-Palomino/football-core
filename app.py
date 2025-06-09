@@ -406,23 +406,72 @@ elif option == "🛠️ Manipulación de Datos":
             
             with col2:
                 st.write("**Formatear Fechas**")
-                date_cols = [col for col in df.columns if df[col].dtype == 'object']
+                # Filtramos columnas que podrían contener fechas (object o string)
+                date_cols = [col for col in df.columns if df[col].dtype in ['object', 'string']]
                 selected_date_col = st.selectbox("Selecciona columna de fecha:", date_cols, key="date_column_select")
-                date_format = st.text_input("Formato de fecha (ejemplo: %Y-%m-%d):", "%Y-%m-%d")
-                
-                if st.button("Formatear Fecha") and selected_date_col:
+
+                # Opciones de formatos de entrada comunes
+                input_formats = {
+                    "Día/Mes/Año (DD/MM/YYYY)": "%d/%m/%Y",
+                    "Mes/Día/Año (MM/DD/YYYY)": "%m/%d/%Y",
+                    "Año-Mes-Día (YYYY-MM-DD)": "%Y-%m-%d",
+                    "Año/Mes/Día (YYYY/MM/DD)": "%Y/%m/%d",
+                    "Día-Mes-Año (DD-MM-YYYY)": "%d-%m-%Y",
+                    "Mes-Día-Año (MM-DD-YYYY)": "%m-%d-%Y",
+                    "Automático (inferir)": "mixed" # Pandas puede intentar inferir
+                }
+                selected_input_format_name = st.selectbox(
+                    "Formato de fecha actual de la columna (entrada):",
+                    list(input_formats.keys()),
+                    key="input_date_format_select"
+                )
+                input_format_str = input_formats[selected_input_format_name]
+
+                # Opciones de formatos de salida deseados
+                output_formats = {
+                    "Año-Mes-Día (YYYY-MM-DD)": "%Y-%m-%d",
+                    "Día/Mes/Año (DD/MM/YYYY)": "%d/%m/%Y",
+                    "Mes/Día/Año (MM/DD/YYYY)": "%m/%d/%Y",
+                    "Año/Mes/Día (YYYY/MM/DD)": "%Y/%m/%d",
+                    "Día-Mes-Año (DD-MM-YYYY)": "%d-%m-%Y",
+                    "Mes-Día-Año (MM-DD-YYYY)": "%m-%d-%Y",
+                    "Fecha y Hora (YYYY-MM-DD HH:MM:SS)": "%Y-%m-%d %H:%M:%S"
+                }
+                selected_output_format_name = st.selectbox(
+                    "Formato de fecha deseado para la salida:",
+                    list(output_formats.keys()),
+                    key="output_date_format_select"
+                )
+                output_format_str = output_formats[selected_output_format_name]
+
+                if st.button("Formatear Fecha y Convertir Tipo") and selected_date_col:
                     try:
-                        df[selected_date_col] = pd.to_datetime(
-                            df[selected_date_col],
-                            format=date_format,
-                            dayfirst=True,
-                            errors='coerce'
-                        ).dt.strftime(date_format)
+                        # Primero, convertimos a tipo datetime
+                        # Usamos 'dayfirst' si el formato de entrada es DD/MM/YYYY o DD-MM-YYYY
+                        dayfirst_flag = True if "Día" in selected_input_format_name else False
+                        
+                        if input_format_str == "mixed":
+                             df[selected_date_col] = pd.to_datetime(
+                                df[selected_date_col],
+                                errors='coerce',
+                                dayfirst=dayfirst_flag # Ayuda a inferir correctamente
+                            )
+                        else:
+                            df[selected_date_col] = pd.to_datetime(
+                                df[selected_date_col],
+                                format=input_format_str,
+                                errors='coerce' # Convierte valores inválidos a NaT (Not a Time)
+                            )
+
+                        # Luego, formateamos la columna para mostrarla en el formato deseado
+                        # Solo aplicamos strftime a los valores que no son NaT
+                        df[selected_date_col] = df[selected_date_col].dt.strftime(output_format_str)
+
                         st.session_state.df = df
-                        st.success(f"Formato de fecha actualizado en '{selected_date_col}'")
+                        st.success(f"Columna '{selected_date_col}' formateada a '{selected_output_format_name}' y convertida a tipo de fecha.")
                         st.rerun()
                     except Exception as e:
-                        st.error(f"Error al formatear fecha: {str(e)}")
+                        st.error(f"Error al formatear fecha: {str(e)}. Asegúrate de que los datos coincidan con el formato de entrada seleccionado.")
         
         with tab6:
             st.subheader("Buscar y Reemplazar Valores")
