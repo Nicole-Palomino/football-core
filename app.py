@@ -33,6 +33,10 @@ warnings.filterwarnings('ignore')
 # Configurar tema oscuro y responsive
 st.markdown("""
 <style>
+    #MainMenu, header, footer {
+        visibility: hidden;
+    }
+
     /* Estilos globales */
     .stApp {
         background-color: #121212;
@@ -707,7 +711,6 @@ elif option == "📈 Análisis de Datos":
         output = io.BytesIO()
         with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
             df.to_excel(writer, index=False, sheet_name='Datos')
-            writer.save()
             processed_data = output.getvalue()
 
         st.download_button(

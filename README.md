@@ -68,6 +68,10 @@ Luego abre en tu navegador el enlace que aparece, típicamente: `http://localhos
 ## ✨ Capturas de Pantalla
 > `![Descripción](ruta/a/captura.png)`
 
+## 🌍 Plataforma en Línea
+
+Accede a la aplicación desplegada aquí: [https://datanalystlab.streamlit.app/](https://datanalystlab.streamlit.app/)
+
 ## 🧠 Créditos
 
 Desarrollado por [Nicole Palomino (@nicolee.palomino)](#) como una solución integral de análisis de datos personalizable.
