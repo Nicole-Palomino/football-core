@@ -412,7 +412,12 @@ elif option == "🛠️ Manipulación de Datos":
                 
                 if st.button("Formatear Fecha") and selected_date_col:
                     try:
-                        df[selected_date_col] = pd.to_datetime(df[selected_date_col]).dt.strftime(date_format)
+                        df[selected_date_col] = pd.to_datetime(
+                            df[selected_date_col],
+                            format=date_format,
+                            dayfirst=True,
+                            errors='coerce'
+                        ).dt.strftime(date_format)
                         st.session_state.df = df
                         st.success(f"Formato de fecha actualizado en '{selected_date_col}'")
                         st.rerun()
