@@ -66,8 +66,17 @@ Luego abre en tu navegador el enlace que aparece, típicamente: `http://localhos
 ```
 
 ## ✨ Capturas de Pantalla
-> `![Descripción](ruta/a/captura.png)`
+> Página de Inicio
+![Inicio](img/homepage.png)
 
+> Página de Manipulación de Datos
+![Manipulación de Datos](img/manipulacion-de-datos.png)
+
+> Página de Análisis de Datos
+![Análisis de Datos](img/analisis-de-datos.png)
+
+> Página de Análisis Avanzado
+![Análisis Avanzado](img/analisis-avanzado.png)
 ## 🌍 Plataforma en Línea
 
 Accede a la aplicación desplegada aquí: [https://datanalystlab.streamlit.app/](https://datanalystlab.streamlit.app/)
