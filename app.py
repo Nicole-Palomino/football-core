@@ -413,6 +413,7 @@ elif option == "🛠️ Manipulación de Datos":
                 # Opciones de formatos de entrada comunes
                 input_formats = {
                     "Día/Mes/Año (DD/MM/YYYY)": "%d/%m/%Y",
+                    "Día/Mes/Año corto (DD/MM/YY)": "%d/%m/%y",
                     "Mes/Día/Año (MM/DD/YYYY)": "%m/%d/%Y",
                     "Año-Mes-Día (YYYY-MM-DD)": "%Y-%m-%d",
                     "Año/Mes/Día (YYYY/MM/DD)": "%Y/%m/%d",
